@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chakravarthi cool drinks & hotel - Order with WhatsApp</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f7f7f7; }
+    header { background:#d35400; color:#fff; padding:15px 20px; }
+    header h1 { margin:0; }
+    .container { max-width:900px; margin:20px auto; background:#fff; padding:20px; box-shadow:0 0 8px rgba(0,0,0,0.1);}
+    .menu-grid { display:flex; flex-wrap:wrap; gap:15px; margin-top:10px; }
+    .item-card { flex:1 1 160px; border:1px solid #ddd; border-radius:4px; padding:8px; background:#fcfcfc;}
+    .item-card h4{margin:0 0 5px; color:#d35400;}
+    .item-card span{display:block; font-size:14px;}
+    form label{display:block; margin-top:10px; font-size:14px;}
+    form input, form select, form textarea{width:100%; padding:7px; margin-top:3px; box-sizing:border-box;}
+    .btn{margin-top:15px; padding:10px 15px; background:#27ae60; color:#fff; border:none; cursor:pointer; border-radius:4px;}
+    .btn:hover{background:#1f8a4b;}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Chakravarthi cool drinks & Hotel</h1>
+</header>
+
+<div class="container">
+  <h2>Today Menu</h2>
+  <div class="menu-grid">
+    <div class="item-card">
+      <h4>Idli (4 pcs)</h4>
+      <span>₹25</span>
+      <label>Qty: <input type="number" min="0" value="0" class="qty" data-name="Idli (4)" data-price="30"></label>
+    </div>
+      <div class="item-card">
+      <h4>Punugu (6 pcs)</h4>
+      <span>₹25</span>
+      <label>Qty: <input type="number" min="0" value="0" class="qty" data-name="Punugu" data-price="30"></label>
+    </div>
+    <div class="item-card">
+      <h4>Puri (2 pcs)</h4>
+      <span>₹25</span>
+      <label>Qty: <input type="number" min="0" value="0" class="qty" data-name="Puri (2)" data-price="30"></label>
+    </div>
+    <div class="item-card">
+      <h4>Tea</h4>
+      <span>₹10</span>
+      <label>Qty: <input type="number" min="0" value="0" class="qty" data-name="Tea" data-price="10"></label>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Place Your Order</h2>
+  <form id="orderForm">
+    <label>Your Name: <input type="text" id="custName" required /></label>
+    <label>Mobile Number: <input type="number" id="phone" required /></label>
+    <label>Order Type:
+      <select id="orderType">
+        <option value="takeaway">Takeaway</option>
+        <option value="delivery">Home Delivery (nearby)</option>
+      </select>
+    </label>
+    <label id="addressLabel" style="display:none;">Delivery Address:
+      <textarea id="address" rows="3"></textarea>
+    </label>
+    <label>Preferred Time: <input type="time" id="time" /></label>
+    <label>Notes: <textarea id="notes" rows="2" placeholder="Less oil, extra chutney, etc."></textarea></label>
+    <button type="button" class="btn" onclick="placeOrder()">Submit Order via WhatsApp</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('orderType').addEventListener('change', function () {
+    const label = document.getElementById('addressLabel');
+    label.style.display = (this.value === 'delivery') ? 'block' : 'none';
+  });
+
+  function placeOrder() {
+    const name = document.getElementById('custName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    if (!name || !phone) {
+      alert('Please enter Name and Mobile No.');
+      return;
+    }
+    const qtyInputs = document.querySelectorAll('.qty');
+    let items = [];
+    let total = 0;
+    qtyInputs.forEach(input => {
+      const qty = parseInt(input.value) || 0;
+      if (qty > 0) {
+        const price = parseInt(input.getAttribute('data-price'));
+        const itemName = input.getAttribute('data-name');
+        const itemTotal = qty * price;
+        total += itemTotal;
+        items.push(itemName + ' x ' + qty + ' = ₹' + itemTotal);
+      }
+    });
+    if (items.length === 0) {
+      alert('Please select at least one item.');
+      return;
+    }
+    const orderType = document.getElementById('orderType').value;
+    const address = document.getElementById('address').value.trim();
+    const time = document.getElementById('time').value;
+    const notes = document.getElementById('notes').value.trim();
+
+    // WhatsApp message content
+    let message = `*Chakravarthi cool drinks & Hotel - New Order*\n`;
+    message += `*Name:* ${name}\n*Mobile:* ${phone}\n*Order Type:* ${orderType === 'delivery' ? 'Home Delivery' : 'Takeaway'}\n`;
+    if (orderType === 'delivery' && address) message += `*Address:* ${address}\n`;
+    if (time) message += `*Preferred Time:* ${time}\n`;
+    message += `*Order Items:*\n`;
+    items.forEach(i => { message += `- ${i}\n`; });
+    message += `*Total:* ₹${total}\n`;
+    if (notes) message += `*Notes:* ${notes}\n`;
+
+    // Your WhatsApp number with country code (no +)
+    const whatsAppNumber = '918555805374';
+
+    // Open WhatsApp chat with pre-filled message
+    const whatsappUrl = `https://wa.me/${whatsAppNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  }
+</script>
+</body>
+</html>

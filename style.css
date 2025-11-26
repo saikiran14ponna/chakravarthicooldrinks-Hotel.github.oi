@@ -1,0 +1,12 @@
+body { font-family: Arial, sans-serif; margin:0; background:#f7f7f7; }
+header { background:#d35400; color:#fff; padding:15px 20px; }
+header h1 { margin:0; }
+.container { max-width:900px; margin:20px auto; background:#fff; padding:20px; box-shadow:0 0 8px rgba(0,0,0,0.1);}
+.menu-grid { display:flex; flex-wrap:wrap; gap:15px; margin-top:10px; }
+.item-card { flex:1 1 160px; border:1px solid #ddd; border-radius:4px; padding:8px; background:#fcfcfc;}
+.item-card h4{margin:0 0 5px; color:#d35400;}
+.item-card span{display:block; font-size:14px;}
+form label{display:block; margin-top:10px; font-size:14px;}
+form input, form select, form textarea{width:100%; padding:7px; margin-top:3px; box-sizing:border-box;}
+.btn{margin-top:15px; padding:10px 15px; background:#27ae60; color:#fff; border:none; cursor:pointer; border-radius:4px;}
+.btn:hover{background:#1f8a4b;}
